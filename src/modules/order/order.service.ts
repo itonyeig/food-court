@@ -23,7 +23,9 @@ export class OrderService {
 
   async findAll(req: Request): Promise<PaginationResult<Order>> {
     try {
-      const data = await Order.query();
+      const data = await Order.query().withGraphFetched(
+        '[calculatedOrder.meals.[addons,brand], orderType]',
+      );
 
       const page = Number(req.query.page) || 1;
       const limit = Number(req.query.limit) || 10;
@@ -37,7 +39,9 @@ export class OrderService {
 
   async findById(id: string): Promise<Order> {
     try {
-      const order = await Order.query().findById(id);
+      const order = await Order.query()
+        .findById(id)
+        .withGraphFetched('[calculatedOrder.meals.[addons,brand], orderType]');
       if (!order) {
         throw new NotFoundException(`Order with ID ${id} not found`);
       }

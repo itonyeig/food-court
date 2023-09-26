@@ -1,4 +1,5 @@
 import { Model } from 'objection';
+import Meal from '../../modules/meal/meal.model';
 
 class Addon extends Model {
   static tableName = 'addons';
@@ -19,7 +20,7 @@ class Addon extends Model {
   static relationMappings = {
     meal: {
       relation: Model.BelongsToOneRelation,
-      modelClass: 'Meal',
+      modelClass: () => Meal,
       join: {
         from: 'addons.meal_id',
         to: 'meals.id',

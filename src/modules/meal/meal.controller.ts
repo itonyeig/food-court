@@ -42,6 +42,8 @@ export class MealController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return await this.mealService.deleteById(id);
+    await this.mealService.deleteById(id);
+
+    return { message: 'meal deleted' };
   }
 }

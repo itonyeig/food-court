@@ -66,7 +66,7 @@ export class MealService {
       const data = await Meal.query().withGraphFetched('brand');
 
       const page = Number(req.query.page) || 1;
-      const limit = Number(req.query.limit) || 50;
+      const limit = Number(req.query.limit) || 10;
 
       return paginate(data, page, limit);
     } catch (error) {

@@ -5,8 +5,8 @@ export const up = async (knex: Knex): Promise<void> => {
     table.increments('id').primary();
     table.integer('amount').notNullable();
     table.boolean('is_combo').defaultTo(false);
-    table.integer('position').notNullable();
-    table.integer('quantity').notNullable();
+    table.integer('position');
+    table.integer('quantity');
     table.string('meal_addon_id');
     table.integer('internal_profit').defaultTo(0);
     table.integer('min_selection_no').defaultTo(0);

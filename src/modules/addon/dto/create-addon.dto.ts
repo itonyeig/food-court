@@ -1,18 +1,11 @@
-import { IsString, IsNumber, IsDate, IsArray } from 'class-validator';
+import { IsString, IsNumber, IsDate, IsInt } from 'class-validator';
 
 export class CreateAddonDto {
-  @IsString()
-  id: string;
-
   @IsNumber()
   amount: number;
 
-  @IsString()
+  @IsInt()
   meal_id: string;
-
-  @IsArray()
-  @IsString({ each: true })
-  meal_data_ids: string[];
 
   @IsDate()
   created_at: Date;
@@ -26,8 +19,8 @@ export class CreateAddonDto {
   @IsNumber()
   internal_profit: number;
 
-  @IsString()
-  min_selection_no: string;
+  @IsNumber()
+  min_selection_no: number;
 
   @IsString()
   meal_addon_category_id: string;

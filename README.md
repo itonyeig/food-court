@@ -71,3 +71,78 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Task 2 High-Level System Architecture for Order Processing System:
+
+                              Load Balancer
+                                  |
+                                  |
+    +--------------+       +--------------+       +--------------+
+    |              |       |              |       |              |
+    | Web Server 1 |-------| Web Server 2 |-------| Web Server n |
+    |              |       |              |       |              |
+    +--------------+       +--------------+       +--------------+
+                                  |
+                                  |
+                           API Gateway
+                                  |
++------------+     +------------+  +------------+     +------------+
+|            |     |            |  |            |     |            |
+| Orders MS  |     | Meals MS   |  | Users MS   |     | Payment MS |
+|            |     |            |  |            |     |            |
++------------+     +------------+  +------------+     +------------+
+                                  |
+                                  |
+                              Databases
+                                  |
+                                  |
+                        Caching (Redis Cluster)
+                                  |
+                                  |
+                           Monitoring & Logs
+
+
+
+### Explanation for Architectural Decisions:
+
+- **Load Balancer:** To evenly distribute traffic to the web servers, ensuring no single server is overwhelmed.
+
+- **Web Servers:** Multiple instances to handle incoming traffic. As traffic grows, we can scale horizontally by adding more instances.
+
+- **API Gateway:** Serves as an entry point for APIs. It can handle request routing, composition, and rate limiting.
+
+#### Microservices (MS):
+
+- **Orders MS:** Handles order creation, status updates, and order processing.
+  
+- **Meals MS:** Manages meal information, including addons and other components.
+  
+- **Users MS:** Deals with user profiles, authentication, and other user-specific functionalities.
+  
+- **Payment MS:** Handles payment transactions securely.
+
+- **Databases:** Use of distributed databases such as Cassandra or sharded PostgreSQL to handle the massive volume of orders. Separate databases for each microservice to ensure they are decoupled.
+
+- **Real-time updates:** Using event-driven architecture. Once an order is updated in the "Orders MS", an event is published to a message broker (like Kafka or RabbitMQ) which other services listen to and take appropriate action.
+
+- **Caching (Redis Cluster):** Cache frequently accessed data to reduce database load. Redis is distributed and can handle high throughput.
+
+- **Monitoring & Logs:** Use monitoring tools like Prometheus and Grafana to monitor the system. Logs are sent to centralized logging systems like ELK Stack.
+
+### Security:
+
+- Use HTTPS for secure data transmission.
+  
+- Store payment data in PCI DSS compliant storage. Never store full card details; only use tokens.
+  
+- Personal user data should be encrypted both at rest and in transit.
+  
+- Implement proper authentication (like JWT) and authorization mechanisms for APIs.
+
+### Resilience and Availability:
+
+- Use container orchestration platforms like Kubernetes to ensure if any service goes down, it's immediately brought back up.
+
+- Database replication to ensure data is backed up in multiple places.
+
+

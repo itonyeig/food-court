@@ -7,7 +7,7 @@ export const up = async (knex: Knex): Promise<void> => {
     table.string('name').notNullable();
     table.boolean('active').defaultTo(true);
     table.decimal('amount', 10, 2);
-    table.text('images', 'text[]');
+    table.specificType('images', 'text[]');
     table.boolean('alcohol').defaultTo(false);
     table.string('item_no').nullable();
     table.string('summary').nullable();
@@ -18,14 +18,14 @@ export const up = async (knex: Knex): Promise<void> => {
     table.integer('quantity').notNullable();
     table.boolean('home_page').defaultTo(false);
     table.string('item_type').notNullable();
-    table.text('meal_tags', 'text[]');
+    table.specificType('meal_tags', 'text[]');
     table.boolean('is_deleted').defaultTo(false);
     table.string('order_note').notNullable();
     table.string('description').notNullable();
     table.integer('minimum_age');
-    table.text('posist_data', 'text[]');
+    table.specificType('posist_data', 'text[]');
     table.string('available_no');
-    table.text('meal_keywords', 'text[]');
+    table.specificType('meal_keywords', 'text[]');
     table.decimal('internal_profit', 10, 2);
     table.string('meal_category_id');
 

@@ -40,9 +40,16 @@ export const up = async (knex: Knex): Promise<void> => {
 
     table.timestamps(true, true);
 
-    
-    table.integer('calculated_order_id').references('id').inTable('calculated_orders').onDelete('CASCADE');
-    table.integer('order_type_id').references('id').inTable('order_types').onDelete('CASCADE');
+    table
+      .integer('calculated_order_id')
+      .references('id')
+      .inTable('calculated_orders')
+      .onDelete('CASCADE');
+    table
+      .integer('order_type_id')
+      .references('id')
+      .inTable('order_types')
+      .onDelete('CASCADE');
   });
 };
 

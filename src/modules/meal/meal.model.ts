@@ -1,6 +1,7 @@
 import { Model } from 'objection';
 import Brand from '../brand/brand.model';
 import Addon from '../addon/addon.model';
+import CalculatedOrder from '../calculated-order/calculated-order.model';
 
 class Meal extends Model {
   static tableName = 'meals';
@@ -10,7 +11,7 @@ class Meal extends Model {
   name: string;
   brand_id: string;
   active: boolean;
-  amount: number; // changed from string
+  amount: number;
   images: Array<string>;
   alcohol: boolean;
   item_no: string | null;
@@ -28,9 +29,9 @@ class Meal extends Model {
   order_note: string;
   updated_at: Date;
   description: string;
-  minimum_age: number; // changed from string
+  minimum_age: number;
   posist_data: object;
-  available_no: number; // changed from string
+  available_no: number;
   meal_keywords: Array<string>;
   internal_profit: number;
   meal_category_id: string;
@@ -50,6 +51,18 @@ class Meal extends Model {
       join: {
         from: 'meals.id',
         to: 'addons.meal_id',
+      },
+    },
+    calculatedOrders: {
+      relation: Model.ManyToManyRelation,
+      modelClass: () => CalculatedOrder,
+      join: {
+        from: 'meals.id',
+        through: {
+          from: 'calculated_order_meals.meal_id',
+          to: 'calculated_order_meals.calculated_order_id',
+        },
+        to: 'calculated_orders.id',
       },
     },
   };

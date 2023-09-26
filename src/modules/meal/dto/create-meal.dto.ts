@@ -7,6 +7,7 @@ import {
   IsDate,
   IsOptional,
   IsInt,
+  Min,
 } from 'class-validator';
 
 export class MealDTO {
@@ -21,6 +22,7 @@ export class MealDTO {
 
   @IsOptional()
   @IsArray()
+  @Min(1, { each: true })
   @IsNumber({}, { each: true })
   addons: number[];
 
@@ -43,6 +45,7 @@ export class MealDTO {
   summary?: string;
 
   @IsInt()
+  @Min(1)
   brand_id: number;
 
   @IsOptional()
@@ -100,6 +103,7 @@ export class MealDTO {
   meal_keywords: string[];
 
   @IsNumber()
+  @Min(1)
   internal_profit: number;
 
   @IsString()

@@ -16,6 +16,9 @@ export const up = async (knex: Knex): Promise<void> => {
     table.boolean('pickup').defaultTo(false);
     table.string('prev_price');
 
+    table.specificType('meal_ids', 'integer[]');
+
+
     table.timestamps(true, true);
   });
 };

@@ -1,4 +1,6 @@
 import { Model } from 'objection';
+import CalculatedOrder from '../calculated-order/calculated-order.model';
+import OrderType from '../order-type/order-type.model';
 
 class Order extends Model {
   static tableName = 'orders';
@@ -18,7 +20,7 @@ class Order extends Model {
   paid: boolean;
   order_code: string;
   order_change: any;
-  calculated_order_id: string;
+  calculated_order_id: number;
   kitchen_verified_time: Date;
   kitchen_completed_time: Date;
   shop_accepted: boolean;
@@ -39,19 +41,15 @@ class Order extends Model {
   scheduled_delivery_date: Date | null;
   scheduled_delivery_time: Date | null;
   is_hidden: boolean;
+  logs: Array<any>;
+
+  created_at?: Date;
+  updated_at?: Date;
 
   static relationMappings = {
-    logs: {
-      relation: Model.HasManyRelation,
-      modelClass: 'OrderLog',
-      join: {
-        from: 'orders.id',
-        to: 'order_logs.order_id',
-      },
-    },
     calculatedOrder: {
       relation: Model.BelongsToOneRelation,
-      modelClass: 'CalculatedOrder',
+      modelClass: () => CalculatedOrder,
       join: {
         from: 'orders.calculated_order_id',
         to: 'calculated_orders.id',
@@ -59,7 +57,7 @@ class Order extends Model {
     },
     orderType: {
       relation: Model.BelongsToOneRelation,
-      modelClass: 'OrderType',
+      modelClass: () => OrderType,
       join: {
         from: 'orders.order_type_id',
         to: 'order_types.id',

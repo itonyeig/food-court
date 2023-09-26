@@ -1,34 +1,56 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseFilters,
+  Req,
+} from '@nestjs/common';
 import { CalculatedOrderService } from './calculated-order.service';
 import { CreateCalculatedOrderDto } from './dto/create-calculated-order.dto';
 import { UpdateCalculatedOrderDto } from './dto/update-calculated-order.dto';
+import { HttpExceptionFilter } from '../../filters/http-exception.filter';
+import { Request } from 'express';
 
 @Controller('calculated-order')
+@UseFilters(new HttpExceptionFilter())
 export class CalculatedOrderController {
-  constructor(private readonly calculatedOrderService: CalculatedOrderService) {}
+  constructor(
+    private readonly calculatedOrderService: CalculatedOrderService,
+  ) {}
 
   @Post()
-  create(@Body() createCalculatedOrderDto: CreateCalculatedOrderDto) {
-    return this.calculatedOrderService.create(createCalculatedOrderDto);
+  async create(@Body() createMealDto: CreateCalculatedOrderDto) {
+    return await this.calculatedOrderService.create(createMealDto);
   }
 
   @Get()
-  findAll() {
-    return this.calculatedOrderService.findAll();
+  async findAll(@Req() req: Request) {
+    return await this.calculatedOrderService.findAll(req);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.calculatedOrderService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.calculatedOrderService.findById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCalculatedOrderDto: UpdateCalculatedOrderDto) {
-    return this.calculatedOrderService.update(+id, updateCalculatedOrderDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateCalculatedOrderDto: UpdateCalculatedOrderDto,
+  ) {
+    return await this.calculatedOrderService.updateById(
+      id,
+      updateCalculatedOrderDto,
+    );
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.calculatedOrderService.remove(+id);
+  async remove(@Param('id') id: string) {
+    await this.calculatedOrderService.deleteById(id);
+    return { message: 'deleted' };
   }
 }

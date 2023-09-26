@@ -1,5 +1,13 @@
 import { Type } from 'class-transformer';
-import { IsString, IsBoolean, ValidateNested, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsBoolean,
+  ValidateNested,
+  IsArray,
+  IsInt,
+  IsDate,
+  Min,
+} from 'class-validator';
 
 export class AddressDetailsDto {
   @IsString()
@@ -13,12 +21,12 @@ export class AddressDetailsDto {
 
   @IsString()
   building_number: string;
+
+  @IsDate()
+  time: Date;
 }
 
 export class CreateCalculatedOrderDto {
-  @IsString()
-  total_amount: string;
-
   @IsBoolean()
   free_delivery: boolean;
 
@@ -33,6 +41,28 @@ export class CreateCalculatedOrderDto {
   address_details: AddressDetailsDto;
 
   @IsArray()
-  @IsString({ each: true })
-  meal_ids: string[];
+  @IsInt({ each: true })
+  @Min(1, { each: true })
+  meal_ids: number[];
+
+  @IsString()
+  lat: string;
+
+  @IsString()
+  lng: string;
+
+  @IsString()
+  cokitchen_polygon_id: string;
+
+  @IsString()
+  user_id: string;
+
+  @IsString()
+  cokitchen_id: string;
+
+  @IsBoolean()
+  pickup: boolean;
+
+  @IsString()
+  prev_price: string;
 }

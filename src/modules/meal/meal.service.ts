@@ -15,7 +15,7 @@ export class MealService {
     try {
       return await Meal.query().insert(brandDto);
     } catch (error) {
-      console.log('error', error);
+      console.log('error', error.message);
       throw new InternalServerErrorException('Failed to create the meal');
     }
   }
@@ -28,7 +28,6 @@ export class MealService {
       }
       return meal;
     } catch (error) {
-      // For other unexpected errors
       throw new InternalServerErrorException('Failed to fetch the meal by ID');
     }
   }

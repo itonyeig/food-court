@@ -1,48 +1,4 @@
-import { IsString, IsBoolean, IsOptional } from 'class-validator';
-
-// export class MealDto {
-//   @IsString()
-//   id: string;
-
-//   @IsBoolean()
-//   new: boolean;
-
-//   @IsString()
-//   name: string;
-
-//   @IsBoolean()
-//   active: boolean;
-
-//   @IsString()
-//   amount: string;
-
-//   @IsArray()
-//   @ValidateNested({ each: true })
-//   @Type(() => AddonDto)
-//   addons: AddonDto[];
-// }
-
-// export class AddonDto {
-//   @IsString()
-//   id: string;
-
-//   @IsString()
-//   amount: string;
-
-//   @IsString()
-//   meal_id: string;
-
-//   @IsBoolean()
-//   is_combo: boolean;
-// }
-
-// export class OrderTypeDto {
-//   @IsString()
-//   id: string;
-
-//   @IsString()
-//   name: string;
-// }
+import { IsString, IsBoolean, Min, IsNumber } from 'class-validator';
 
 export class CreateOrderDto {
   @IsString()
@@ -63,10 +19,6 @@ export class CreateOrderDto {
   @IsBoolean()
   kitchen_dispatched: boolean;
 
-  @IsOptional()
-  @IsString()
-  kitchen_dispatched_time?: string;
-
   @IsString()
   rider_id: string;
 
@@ -82,15 +34,21 @@ export class CreateOrderDto {
   @IsString()
   order_code: string;
 
-  @IsOptional()
-  @IsString()
-  box_number?: string;
+  @IsNumber()
+  @Min(1)
+  calculated_order_id: number;
 
   @IsBoolean()
   shop_accepted: boolean;
 
   @IsBoolean()
   shop_prepared: boolean;
+
+  @IsNumber()
+  no_of_mealbags_delivered: number;
+
+  @IsNumber()
+  no_of_drinks_delivered: number;
 
   @IsBoolean()
   rider_started: boolean;
@@ -101,18 +59,18 @@ export class CreateOrderDto {
   @IsBoolean()
   is_failed_trip: boolean;
 
-  @IsOptional()
+  failed_trip_details: Record<string, any>;
+
   @IsString()
-  failed_trip_details?: string;
+  box_number: string;
 
   @IsBoolean()
   scheduled: boolean;
 
-  // Reference to CalculatedOrder
-  @IsString()
-  calculated_order_id: string;
+  @IsBoolean()
+  is_hidden: boolean;
 
-  // Reference to OrderType
   @IsString()
+  @Min(1)
   order_type_id: string;
 }

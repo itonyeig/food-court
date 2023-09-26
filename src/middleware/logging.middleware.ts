@@ -7,18 +7,13 @@ export class LoggingMiddleware implements NestMiddleware {
   private logger = new Logger('HTTP');
 
   use(req: Request, res: Response, next: () => void) {
+    const { method, originalUrl, body } = req;
     res.on('finish', () => {
-      const { method, originalUrl, body } = req;
       const timestamp = new Date().toISOString();
-      const handler = res['_currentRoute'];
-
       this.logger.log(
-        `[${timestamp}] ${method} ${originalUrl} Handled by: ${handler} - Body: ${JSON.stringify(
-          body,
-        )}`,
+        `[${timestamp}] ${originalUrl} - Body: ${JSON.stringify(body)}`,
       );
     });
-
     next();
   }
 }
